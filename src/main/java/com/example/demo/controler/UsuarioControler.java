@@ -42,7 +42,7 @@ public class UsuarioControler {
 
     }
     @PutMapping("/usuarios/")
-    public Usuario updateUsuario(@RequestBody Usuario usuario)throws SQLException{
+    public boolean updateUsuario(@RequestBody Usuario usuario)throws SQLException{
         return  usuarioService.updateUsuario(usuario);
     }
 

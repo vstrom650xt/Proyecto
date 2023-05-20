@@ -19,8 +19,8 @@ public class UsuarioService {
     }
 
 
-    public Usuario updateUsuario(Usuario usuario) {
-        return null;
+    public boolean updateUsuario(Usuario usuario) throws SQLException {
+        return repository.updateUsuario(usuario);
 
     }
 

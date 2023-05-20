@@ -32,10 +32,25 @@ public class UsuarioRepository implements IUsuarioRepository{
     }
 
     @Override
-    public Usuario updateUsuario(Usuario usuario) throws SQLException {
+    public boolean updateUsuario(Usuario usuario) throws SQLException {
         DataSource ds = MyDataSource.getMySQLDataSource();
-        String query = "update Usuarios set ";
-        return null;
+        String query = "{? = call actualizar_usuario(?,?,?,?)}";
+        boolean insertado;
+
+        try (Connection connection = ds.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query)
+        ) {
+
+            callableStatement.setInt(2, usuario.getIdUsuario());
+            callableStatement.setString(3, usuario.getNombre());;
+            callableStatement.setString(4, usuario.getApellidos());
+            callableStatement.setInt(5, usuario.getIdOficio());
+            insertado = callableStatement.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return insertado;
     }
 
     @Override
