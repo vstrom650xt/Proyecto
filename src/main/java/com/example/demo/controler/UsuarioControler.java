@@ -25,15 +25,16 @@ public class UsuarioControler {
 
 
     @GetMapping("/usuarios/")
-    public ResponseEntity<?>  getUsuarios( ){
+    public ResponseEntity<?> getUsuarios() {
         try {
             return new ResponseEntity<>(usuarioService.getUsuarios(), HttpStatus.OK);
-        } catch(SQLException e){
-            Map<String,Object> response = new HashMap<>();
-            response.put("code",e.getErrorCode());
-            response.put("message",e.getMessage());
-            return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
-        }    }
+        } catch (SQLException e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", e.getErrorCode());
+            response.put("message", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
     @PostMapping("/usuarios/")
@@ -41,14 +42,15 @@ public class UsuarioControler {
         return usuarioService.addUsuario(usuario);
 
     }
+
     @PutMapping("/usuarios/")
-    public boolean updateUsuario(@RequestBody Usuario usuario)throws SQLException{
-        return  usuarioService.updateUsuario(usuario);
+    public int updateUsuario(@RequestBody Usuario usuario) throws SQLException {
+        return usuarioService.updateUsuario(usuario);
     }
 
-    @DeleteMapping("/usuarios/")
-    public boolean deleteUsuario(@PathVariable("id") int id){
-        return  usuarioService.deleteUsuario(id);
+    @DeleteMapping("/usuarios/{id}")
+    public int deleteUsuario(@PathVariable("id") int id) {
+        return usuarioService.deleteUsuario(id);
 
     }
 

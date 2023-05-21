@@ -19,13 +19,13 @@ public class UsuarioService {
     }
 
 
-    public boolean updateUsuario(Usuario usuario) throws SQLException {
+    public int updateUsuario(Usuario usuario) throws SQLException {
         return repository.updateUsuario(usuario);
 
     }
 
-    public boolean deleteUsuario(int id) {
-        return true;
+    public int deleteUsuario(int id) {
+        return repository.deleteUsuario(id);
 
     }
 
