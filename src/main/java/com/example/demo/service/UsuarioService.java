@@ -14,17 +14,17 @@ public class UsuarioService {
     public UsuarioRepository repository;
 
 
-    public boolean addUsuario(Usuario usuario) throws SQLException {
+    public Usuario addUsuario(Usuario usuario) throws SQLException {
         return repository.addUsuario(usuario);
     }
 
 
-    public int updateUsuario(Usuario usuario) throws SQLException {
+    public Usuario updateUsuario(Usuario usuario) throws SQLException {
         return repository.updateUsuario(usuario);
 
     }
 
-    public int deleteUsuario(int id) {
+    public Usuario deleteUsuario(int id) {
         return repository.deleteUsuario(id);
 
     }

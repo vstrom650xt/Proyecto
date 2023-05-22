@@ -10,8 +10,9 @@ import java.util.List;
 @Repository
 public class UsuarioRepository implements IUsuarioRepository{
     @Override
-    public boolean addUsuario(Usuario usuario){
+    public Usuario addUsuario(Usuario usuario){
         boolean insertado;
+        Usuario usuario1 = null;
         DataSource ds = MyDataSource.getMySQLDataSource();
         String query = "{call crear_usuario(?,?,?,?,?)}";
         try (Connection connection = ds.getConnection();
@@ -23,20 +24,24 @@ public class UsuarioRepository implements IUsuarioRepository{
             callableStatement.setString(4, usuario.getApellidos());
             callableStatement.setInt(5, usuario.getIdOficio());
 
+
             insertado = callableStatement.executeUpdate() == 1;
+            usuario1 = new Usuario(callableStatement.getInt(1), callableStatement.getString(2),callableStatement.getString(3),callableStatement.getInt(4));
+
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        return insertado;
+        return usuario1;
 
     }
 
     @Override
-    public int updateUsuario(Usuario usuario){
+    public Usuario updateUsuario(Usuario usuario){
         DataSource ds = MyDataSource.getMySQLDataSource();
         String query = "{? = call actualizar_usuario(?,?,?,?)}";
         int i;
+        Usuario usuario1;
         try (Connection connection = ds.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query)
         ) {
@@ -46,35 +51,36 @@ public class UsuarioRepository implements IUsuarioRepository{
             callableStatement.setString(4, usuario.getApellidos());
             callableStatement.setInt(5, usuario.getIdOficio());
             i = callableStatement.executeUpdate();
+            usuario1 = new Usuario(callableStatement.getInt(1), callableStatement.getString(2),callableStatement.getString(3),callableStatement.getInt(4));
+
 
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        return i;
+        return usuario1;
     }
 
     @Override
-    public int deleteUsuario(int id) {
+    public Usuario deleteUsuario(int id) {
 
         DataSource ds = MyDataSource.getMySQLDataSource();
         String query = "{ ? = call eliminar_usuario(?)}";
-
+        Usuario usuario = null;
         int i = 0;
         try (Connection con = ds.getConnection();
              CallableStatement callableStatement = con.prepareCall(query)
         ) {
             callableStatement.registerOutParameter(1,Types.INTEGER);
             callableStatement.setInt(2,id);
-
-            i = callableStatement.executeUpdate();
-
+           callableStatement.executeUpdate();
+            usuario = new Usuario(callableStatement.getInt(1), callableStatement.getString(2),callableStatement.getString(3),callableStatement.getInt(4));
         } catch (SQLException e) {
             e.printStackTrace();
 
         }
 
-        return i;
+        return usuario;
     }
 
     @Override

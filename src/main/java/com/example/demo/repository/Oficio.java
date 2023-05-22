@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
@@ -11,7 +12,7 @@ import java.util.Objects;
 @ToString
 @Builder
 
-public class Oficio {
+public class Oficio implements Serializable {
     private int idOficio;
     private String descripcion;
     private String imgUrl;

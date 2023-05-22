@@ -3,6 +3,7 @@ package com.example.demo.repository;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 @Getter
 @Setter
@@ -11,7 +12,7 @@ import java.util.Objects;
 @ToString
 @Builder
 
-public class Usuario {
+public class Usuario implements Serializable {
     private int idUsuario; //autoincrement
     private String nombre;
     private String apellidos;

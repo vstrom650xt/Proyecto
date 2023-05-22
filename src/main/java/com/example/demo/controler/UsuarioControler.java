@@ -38,18 +38,18 @@ public class UsuarioControler {
 
 
     @PostMapping("/usuarios/")
-    public boolean addUsuario(@RequestBody Usuario usuario) throws SQLException {
+    public Usuario addUsuario(@RequestBody Usuario usuario) throws SQLException {
         return usuarioService.addUsuario(usuario);
 
     }
 
     @PutMapping("/usuarios/")
-    public int updateUsuario(@RequestBody Usuario usuario) throws SQLException {
+    public Usuario updateUsuario(@RequestBody Usuario usuario) throws SQLException {
         return usuarioService.updateUsuario(usuario);
     }
 
     @DeleteMapping("/usuarios/{id}")
-    public int deleteUsuario(@PathVariable("id") int id) {
+    public Usuario deleteUsuario(@PathVariable("id") int id) {
         return usuarioService.deleteUsuario(id);
 
     }
