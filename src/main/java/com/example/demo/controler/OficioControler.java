@@ -27,9 +27,9 @@ public class OficioControler {
 //    }
 
 
-    @GetMapping("/oficios/{id}")
-    public List<Oficio> getOficios(@PathVariable("id") int id) throws SQLException {
-    return  oficioService.getOficios(id);
+    @GetMapping("/oficios/")
+    public List<Oficio> getOficios() throws SQLException {
+    return  oficioService.getOficios();
 
     }
 

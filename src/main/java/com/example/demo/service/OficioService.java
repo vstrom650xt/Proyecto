@@ -15,8 +15,8 @@ public class OficioService {
     public IOficioRepository repository;
 
 
-    public List<Oficio> getOficios(int id) throws SQLException {
+    public List<Oficio> getOficios() throws SQLException {
 
-        return  repository.getOficios(id);
+        return  repository.getOficios();
     }
 }

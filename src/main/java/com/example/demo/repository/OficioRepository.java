@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public class OficioRepository implements IOficioRepository {
     @Override
-    public List<Oficio> getOficios(int id) throws SQLException {
+    public List<Oficio> getOficios() throws SQLException {
         DataSource ds = MyDataSource.getMySQLDataSource();
         String query = "{call obtener_oficios(?)}";
         ArrayList<Oficio> oficios = new ArrayList<>();
@@ -18,15 +18,13 @@ public class OficioRepository implements IOficioRepository {
         try (Connection connection = ds.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query)
         ) {
-
-             callableStatement.setInt(1,id);
-
+            // esto es para en la api poder pasarle null y que lo interprete bien
+            callableStatement.setNull(1,0);
+            // callableStatement.setInt(1 ,id);
             ResultSet rs = callableStatement.executeQuery();
-
             Oficio oficio;
             while (rs.next()) {
-                oficio = new Oficio(rs.getInt(1), rs.getString(2),
-                        rs.getString(3));
+                oficio = new Oficio(rs.getInt(1), rs.getString(2));
                 oficios.add(oficio);
             }
 

@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IOficioRepository {
-    List<Oficio> getOficios(int id)throws SQLException;
+    List<Oficio> getOficios()throws SQLException;
     //FALTA FOTO
 
 }

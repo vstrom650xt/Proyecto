@@ -18,15 +18,13 @@ public class UsuarioRepository implements IUsuarioRepository{
         try (Connection connection = ds.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query)
         ) {
-
+// los de salida callablestatement (out ) si es (IN) usuarios.getLoqsea(); todo lo q sea out en bbdd  aqui es registerOutPARAMETRE
             callableStatement.setInt(2, usuario.getIdUsuario());
             callableStatement.setString(3, usuario.getNombre());;
             callableStatement.setString(4, usuario.getApellidos());
             callableStatement.setInt(5, usuario.getIdOficio());
-
-
-            insertado = callableStatement.executeUpdate() == 1;
-            usuario1 = new Usuario(callableStatement.getInt(1), callableStatement.getString(2),callableStatement.getString(3),callableStatement.getInt(4));
+            callableStatement.executeUpdate();
+            usuario1 = new Usuario(callableStatement.getInt(1), usuario.getNombre(),usuario.getApellidos(), usuario.getIdOficio());
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,19 +38,16 @@ public class UsuarioRepository implements IUsuarioRepository{
     public Usuario updateUsuario(Usuario usuario){
         DataSource ds = MyDataSource.getMySQLDataSource();
         String query = "{? = call actualizar_usuario(?,?,?,?)}";
-        int i;
         Usuario usuario1;
         try (Connection connection = ds.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query)
         ) {
-
             callableStatement.setInt(2, usuario.getIdUsuario());
             callableStatement.setString(3, usuario.getNombre());;
             callableStatement.setString(4, usuario.getApellidos());
             callableStatement.setInt(5, usuario.getIdOficio());
-            i = callableStatement.executeUpdate();
-            usuario1 = new Usuario(callableStatement.getInt(1), callableStatement.getString(2),callableStatement.getString(3),callableStatement.getInt(4));
-
+            callableStatement.executeUpdate();
+            usuario1 = new Usuario(callableStatement.getInt(1), usuario.getNombre(),usuario.getApellidos(), usuario.getIdOficio());
 
         } catch (SQLException e) {
             e.printStackTrace();
