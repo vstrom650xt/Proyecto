@@ -24,7 +24,7 @@ public class OficioRepository implements IOficioRepository {
             ResultSet rs = callableStatement.executeQuery();
             Oficio oficio;
             while (rs.next()) {
-                oficio = new Oficio(rs.getInt(1), rs.getString(2));
+                oficio = new Oficio(rs.getInt(1), rs.getString(2),rs.getString(4));
                 oficios.add(oficio);
             }
 
