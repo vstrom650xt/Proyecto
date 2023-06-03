@@ -11,14 +11,16 @@ import java.util.List;
 public class UsuarioRepository implements IUsuarioRepository{
     @Override
     public Usuario addUsuario(Usuario usuario){
-        boolean insertado;
-        Usuario usuario1 = null;
+
         DataSource ds = MyDataSource.getMySQLDataSource();
         String query = "{call crear_usuario(?,?,?,?,?)}";
+        Usuario usuario1;
         try (Connection connection = ds.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query)
         ) {
 // los de salida callablestatement (out ) si es (IN) usuarios.getLoqsea(); todo lo q sea out en bbdd  aqui es registerOutPARAMETRE
+            callableStatement.registerOutParameter(1,Types.INTEGER);
+
             callableStatement.setInt(2, usuario.getIdUsuario());
             callableStatement.setString(3, usuario.getNombre());;
             callableStatement.setString(4, usuario.getApellidos());
@@ -42,12 +44,13 @@ public class UsuarioRepository implements IUsuarioRepository{
         try (Connection connection = ds.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query)
         ) {
+            callableStatement.registerOutParameter(1,Types.INTEGER);
             callableStatement.setInt(2, usuario.getIdUsuario());
             callableStatement.setString(3, usuario.getNombre());;
             callableStatement.setString(4, usuario.getApellidos());
             callableStatement.setInt(5, usuario.getIdOficio());
             callableStatement.executeUpdate();
-            usuario1 = new Usuario(callableStatement.getInt(1), usuario.getNombre(),usuario.getApellidos(), usuario.getIdOficio());
+            usuario1 = new Usuario((usuario.getIdUsuario()), usuario.getNombre(),usuario.getApellidos(), usuario.getIdOficio());
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,23 +61,25 @@ public class UsuarioRepository implements IUsuarioRepository{
 
     @Override
     public Usuario deleteUsuario(int id) {
-
         DataSource ds = MyDataSource.getMySQLDataSource();
         String query = "{ ? = call eliminar_usuario(?)}";
         Usuario usuario = null;
-        int i = 0;
         try (Connection con = ds.getConnection();
              CallableStatement callableStatement = con.prepareCall(query)
         ) {
-            callableStatement.registerOutParameter(1,Types.INTEGER);
-            callableStatement.setInt(2,id);
-           callableStatement.executeUpdate();
-            usuario = new Usuario(callableStatement.getInt(1), callableStatement.getString(2),callableStatement.getString(3),callableStatement.getInt(4));
+            callableStatement.registerOutParameter(1, Types.INTEGER);
+            callableStatement.setInt(2, id);
+            boolean hasResults = callableStatement.execute();
+            if (hasResults) {
+                ResultSet rs = callableStatement.getResultSet();
+                if (rs.next()) {
+                    usuario = new Usuario(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+                }
+                rs.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
-
         return usuario;
     }
 
